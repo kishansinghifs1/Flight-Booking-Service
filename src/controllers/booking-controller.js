@@ -50,7 +50,24 @@ async function makePayment(req,res){
         .json(ErrorResponse);
     }
 }
+async function getBookings(req, res) {
+    try {
+        // userId should ideally come from auth middleware, but we can extract it from query as a fallback
+        const userId = req.query.userId || req.body.userId;
+        const response = await BookingService.getUserBookings(userId);
+        SuccessResponse.data = response;
+        return res
+            .status(StatusCodes.OK)
+            .json(SuccessResponse);
+    } catch (error) {
+        ErrorResponse.error = error;
+        return res
+            .status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .json(ErrorResponse);
+    }
+}
 module.exports ={
     createBooking,
-    makePayment
+    makePayment,
+    getBookings
 }

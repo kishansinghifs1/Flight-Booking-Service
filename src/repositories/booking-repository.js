@@ -28,6 +28,14 @@ async createBooking(data,transaction){
         }, {transaction: transaction});
         return response;
     }
+    async getByUserId(userId) {
+        const response = await Booking.findAll({
+            where: {
+                userId: userId
+            }
+        });
+        return response;
+    }
     async cancelOldBookings(timestamp) {
         console.log("in repo")
         const response = await Booking.update({status: CANCELLED},{

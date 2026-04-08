@@ -90,6 +90,15 @@ async function cancelBooking(bookingId) {
     }
 }
 
+async function getUserBookings(userId) {
+    try {
+        const response = await bookingRepository.getByUserId(userId);
+        return response;
+    } catch(error) {
+        throw error;
+    }
+}
+
 async function cancelOldBookings() {
     try {
         console.log("Inside service")
@@ -105,5 +114,6 @@ async function cancelOldBookings() {
 module.exports = {
   createBooking,
   makePayment,
+  getUserBookings,
   cancelOldBookings
 };
