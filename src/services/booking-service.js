@@ -56,7 +56,14 @@ async function makePayment(data){
        throw new AppError("The user corresponding to the booking  doesnt match", StatusCodes.BAD_REQUEST);
     }
     //we assume here payment is succesfull
-    await bookingRepository.update(data.bookingId,{status:BOOKED},transaction);
+    const updateData = { status: BOOKED };
+    if (data.metadata) {
+       updateData.metadata = data.metadata;
+       if (data.metadata.seats) {
+          updateData.seats = data.metadata.seats;
+       }
+    }
+    await bookingRepository.update(data.bookingId, updateData, transaction);
     Queue.sendData({
         recepientEmail:'sri.shruti24@gmail.com',
         subject:'Flight booked',

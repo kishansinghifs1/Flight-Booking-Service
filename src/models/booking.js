@@ -39,6 +39,14 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.INTEGER,
       allowNull:false
     },
+    seats: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    metadata: {
+      type: DataTypes.JSONB,
+      allowNull: true
+    }
   }, {
     sequelize,
     modelName: 'Booking',
