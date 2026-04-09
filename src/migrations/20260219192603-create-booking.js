@@ -1,7 +1,8 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 const {Enums}=require('../utils/common');
-const {BOOKED,CANCELLED,INITIATED,PENDING}=Enums.BOOKING_STATUS;
+const { BOOKED, CANCELLED, INITIATED, PENDING } = Enums.BOOKING_STATUS;
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Bookings', {
@@ -22,7 +23,7 @@ module.exports = {
       status: {
         type: Sequelize.ENUM,
         values:[BOOKED,CANCELLED,INITIATED,PENDING],
-      defaultValue:INITIATED,
+        defaultValue:INITIATED,
         allowNull:false
       },
       noOfSeats:{
@@ -46,5 +47,7 @@ module.exports = {
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Bookings');
+    // Drop Enum type specifically for Postgres to avoid conflicts on recreation
+    await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Bookings_status";');
   }
 };

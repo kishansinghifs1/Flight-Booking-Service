@@ -16,7 +16,7 @@ const {BookingService}=require('../services');
     }catch(error){
         ErrorResponse.error = error;
         return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
         .json(ErrorResponse);
     }
 }
@@ -36,7 +36,8 @@ async function makePayment(req,res){
         const response =await BookingService.makePayment({
            totalCost:req.body.totalCost,
             userId:req.body.userId,
-            bookingId:req.body.bookingId
+            bookingId:req.body.bookingId,
+            metadata:req.body.metadata
         });
          inMemDb[idempotencyKey] = idempotencyKey;
          SuccessResponse.data = response;
@@ -46,7 +47,7 @@ async function makePayment(req,res){
     }catch(error){
         ErrorResponse.error = error;
         return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
         .json(ErrorResponse);
     }
 }
@@ -62,7 +63,7 @@ async function getBookings(req, res) {
     } catch (error) {
         ErrorResponse.error = error;
         return res
-            .status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
             .json(ErrorResponse);
     }
 }
